@@ -12,3 +12,7 @@ class Client(Person):
 
     def set_vehicle(self, vehicle):
         self.__vehicle = vehicle
+
+    def print_info(self):
+        super().print_info()
+        print(self.get_vehicle().get_plate())

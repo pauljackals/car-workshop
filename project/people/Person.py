@@ -3,5 +3,8 @@ class Person:
         self.__name_first = name_first
         self.__name_last = name_last
 
-    def get_name(self):
-        return self.__name_first, self.__name_last
+    def get_name_full(self):
+        return self.__name_first + " " + self.__name_last
+
+    def print_info(self):
+        print(self.get_name_full())
