@@ -1,6 +1,6 @@
-from people.Client import Client
-from vehicles.Vehicle import Vehicle
-from vehicles.parts.Engine import Engine
+from people.client import Client
+from vehicles.vehicle import Vehicle
+from vehicles.parts.engine import Engine
 
 
 class Car(Vehicle):

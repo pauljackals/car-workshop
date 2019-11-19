@@ -1,5 +1,5 @@
 from people import skills
-from people.Person import Person
+from people.person import Person
 
 
 class Mechanic(Person):

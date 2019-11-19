@@ -1,5 +1,5 @@
-from vehicles.parts.Engine import Engine
-from vehicles.parts.Wheel import Wheel
+from vehicles.parts.engine import Engine
+from vehicles.parts.wheel import Wheel
 
 
 class Vehicle:

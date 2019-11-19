@@ -1,4 +1,4 @@
-from people.Person import Person
+from people.person import Person
 
 
 class Client(Person):

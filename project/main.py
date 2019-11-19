@@ -1,7 +1,7 @@
 from people import skills
-from people.Client import Client
-from people.Mechanic import Mechanic
-from vehicles.Car import Car
+from people.client import Client
+from people.mechanic import Mechanic
+from vehicles.car import Car
 
 client = Client("John", "Doe")
 car = Car("XY54343", "blue")
