@@ -3,9 +3,11 @@ from people.client import Client
 from people.mechanic import Mechanic
 from vehicles.car import Car
 
-client = Client("John", "Doe")
+# client = Client("John", "Doe")
+client = Client()
 car = Car("XY54343", "blue")
-mechanic = Mechanic("Tom", "Kit", skills.levels_of_skill["apprentice"])
+# mechanic = Mechanic("Tom", "Kit", skills.levels_of_skill["apprentice"])
+mechanic = Mechanic(skills.levels_of_skill["apprentice"])
 
 client.set_vehicle(car)
 car.set_owner(client)
