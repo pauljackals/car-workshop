@@ -5,8 +5,8 @@ from vehicles.parts.engine import Engine
 
 class Car(Vehicle):
 
-    def __init__(self, plate, color):
-        super().__init__(plate, 4, color)
+    def __init__(self):
+        super().__init__(4)
         self.__owner = None
 
     def set_owner(self, owner):

@@ -1,4 +1,4 @@
-from people import skills
+from utils import skills
 from people.person import Person
 
 
@@ -9,17 +9,13 @@ class Mechanic(Person):
     #     self.__skill_number = skill_number
     #     self.__skill = skills.get_skill_name(skill_number)
 
-    def __init__(self, skill_number):
+    def __init__(self):
         super().__init__()
-        self.__skill_number = skill_number
-        self.__skill = skills.get_skill_name(skill_number)
-
-    def get_skill_number(self):
-        return self.__skill_number
+        self.__skill = skills.get_random_skill()
 
     def get_skill(self):
         return self.__skill
 
     def print_info(self):
         super().print_info()
-        print(self.get_skill() + " (" + str(self.get_skill_number()) + ")")
+        print(skills.get_skill_name(self.__skill) + " (" + str(self.get_skill()) + ")")

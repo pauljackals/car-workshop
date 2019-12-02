@@ -1,14 +1,16 @@
+import random
+import string
+
 from vehicles.parts.engine import Engine
 from vehicles.parts.wheel import Wheel
 
 
 class Vehicle:
 
-    def __init__(self, plate, wheel_number, color):
-        self.__plate = plate
+    def __init__(self, wheel_number):
+        self.__plate = self.__random_plate()
         self.__wheels = [Wheel(100)] * wheel_number
         self.__engine = Engine(100)
-        self.__color = color
 
     def get_plate(self):
         return self.__plate
@@ -25,3 +27,11 @@ class Vehicle:
         for i in range(len(self.get_wheels())):
             wheel = self.get_wheels()[i]
             print("wheel " + str(i+1) + " (" + str(wheel.get_status()) + ")")
+
+    def __random_plate(self):
+        plate = ""
+        for i in range(2):
+            plate += random.choice(string.ascii_uppercase)
+        for i in range(5):
+            plate += random.choice(string.digits)
+        return plate
