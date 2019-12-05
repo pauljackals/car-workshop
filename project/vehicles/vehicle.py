@@ -1,6 +1,7 @@
 import random
 import string
 
+from utils import plates
 from vehicles.parts.engine import Engine
 from vehicles.parts.wheel import Wheel
 
@@ -32,16 +33,12 @@ class Vehicle:
             print("wheel " + str(i+1) + " (" + str(wheel.get_status()) + ")")
 
     def __random_plate(self):
-        plate = ""
-        for i in range(2):
-            plate += random.choice(string.ascii_uppercase)
-        for i in range(5):
-            plate += random.choice(string.digits)
+        while True:
+            plate = ""
+            for i in range(2):
+                plate += random.choice(string.ascii_uppercase)
+            for i in range(5):
+                plate += random.choice(string.digits)
+            if plates.register(plate):
+                break
         return plate
-
-    def __random_if_damaged(self):
-        roll = random.randint(0, 9)
-        if roll > 2:
-            return True
-        else:
-            return False

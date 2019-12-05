@@ -2,9 +2,6 @@ from utils import names, gender
 
 
 class Person:
-    # def __init__(self, name_first, name_last):
-    #     self.__name_first = name_first
-    #     self.__name_last = name_last
 
     def __init__(self):
         self.__gender = gender.get_random_gender()
