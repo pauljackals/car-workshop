@@ -1,16 +1,12 @@
-from people.client import Client
 from people.mechanic import Mechanic
 from vehicles.car import Car
 
-client = Client()
 car = Car()
+client = car.get_owner()
 mechanic = Mechanic()
 
-client.set_vehicle(car)
-car.set_owner(client)
-
+car.print_info()
+print()
 client.print_info()
 print()
 mechanic.print_info()
-print()
-car.print_info()

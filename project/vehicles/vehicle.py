@@ -1,6 +1,7 @@
 import random
 import string
 
+from people.client import Client
 from utils import plates
 from vehicles.parts.engine import Engine
 from vehicles.parts.wheel import Wheel
@@ -15,6 +16,14 @@ class Vehicle:
             wheels.append(Wheel())
         self.__wheels = wheels
         self.__engine = Engine()
+        self.__owner = Client()
+        self.__owner.set_vehicle(self)
+
+    def set_owner(self, owner):
+        self.__owner = owner
+
+    def get_owner(self):
+        return self.__owner
 
     def get_plate(self):
         return self.__plate
@@ -26,11 +35,12 @@ class Vehicle:
         return self.__wheels
 
     def print_info(self):
-        print(self.get_plate())
-        print("engine (" + str(self.get_engine().get_status()) + ")")
-        for i in range(len(self.get_wheels())):
-            wheel = self.get_wheels()[i]
+        print(self.__plate)
+        print("engine (" + str(self.__engine.get_status()) + ")")
+        for i in range(len(self.__wheels)):
+            wheel = self.__wheels[i]
             print("wheel " + str(i+1) + " (" + str(wheel.get_status()) + ")")
+        print(self.__owner.get_name_full())
 
     def __random_plate(self):
         while True:

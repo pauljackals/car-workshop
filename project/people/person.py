@@ -16,4 +16,4 @@ class Person:
 
     def print_info(self):
         print(self.get_name_full())
-        print(gender.get_gender_name(self.get_gender()))
+        print(gender.get_gender_name(self.__gender))
