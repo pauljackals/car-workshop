@@ -1,6 +1,6 @@
-class Wheel:
-    def __init__(self, status):
-        self.__status = status
+from vehicles.parts.part import Part
 
-    def get_status(self):
-        return self.__status
+
+class Wheel(Part):
+    def __init__(self):
+        super().__init__()

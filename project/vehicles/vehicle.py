@@ -9,8 +9,11 @@ class Vehicle:
 
     def __init__(self, wheel_number):
         self.__plate = self.__random_plate()
-        self.__wheels = [Wheel(100)] * wheel_number
-        self.__engine = Engine(100)
+        wheels = []
+        for i in range(wheel_number):
+            wheels.append(Wheel())
+        self.__wheels = wheels
+        self.__engine = Engine()
 
     def get_plate(self):
         return self.__plate
@@ -35,3 +38,10 @@ class Vehicle:
         for i in range(5):
             plate += random.choice(string.digits)
         return plate
+
+    def __random_if_damaged(self):
+        roll = random.randint(0, 9)
+        if roll > 2:
+            return True
+        else:
+            return False
