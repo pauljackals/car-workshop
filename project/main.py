@@ -1,4 +1,3 @@
-from utils import skills
 from people.client import Client
 from people.mechanic import Mechanic
 from vehicles.car import Car
