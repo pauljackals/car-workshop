@@ -17,7 +17,9 @@ def get_random_skill():
 
 
 __levels_of_skill = {
-    "apprentice": 30,
-    "journeyman": 60,
+    "novice": 30,
+    "apprentice": 45,
+    "adept": 60,
+    "expert": 75,
     "master": 90
 }

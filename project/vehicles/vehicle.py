@@ -36,10 +36,10 @@ class Vehicle:
 
     def print_info(self):
         print(self.__plate)
-        print("engine (" + str(self.__engine.get_status()) + ")")
+        print("engine (" + str(self.__engine.get_status()) + "%)")
         for i in range(len(self.__wheels)):
             wheel = self.__wheels[i]
-            print("wheel " + str(i+1) + " (" + str(wheel.get_status()) + ")")
+            print("wheel " + str(i+1) + " (" + str(wheel.get_status()) + "%)")
         print(self.__owner.get_name_full())
 
     def __random_plate(self):
