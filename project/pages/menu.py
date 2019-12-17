@@ -3,28 +3,38 @@ from pages.read_key import read_key
 
 
 def menu():
+    options_names = {
+        'quit': 'Quit',
+        'new': 'New game',
+        'load': 'Load game'
+    }
     options = [
-        'New game',
-        'Quit'
+        'new',
+        'load',
+        'quit'
     ]
     pick = 0
+
     while True:
         clear_console()
+        print('CAR WORKSHOP SIMULATOR')
+        print()
         for i in range(len(options)):
             if i == pick:
-                print('>>', end='')
+                print('>>' + options_names[options[i]] + '<<')
             else:
-                print('  ', end='')
-            print(options[i])
+                print('  ' + options_names[options[i]])
 
         key = read_key()
 
-        if key == 'q':
-            break
-        elif key == 'ARROW_DOWN' and pick+1 < len(options):
+        if key == 'ARROW_DOWN' and pick+1 < len(options):
             pick += 1
         elif key == 'ARROW_UP' and pick-1 >= 0:
             pick -= 1
+        elif key == 'ENTER':
+            if options[pick] == 'quit':
+                clear_console()
+                break
 
         # key1 = read_key()
         # if key1 == '\xe0':

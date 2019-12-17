@@ -7,6 +7,8 @@ def read_key():
     if system == "Windows":
         try:
             key = msvcrt.getch().decode()
+            if key == '\r':
+                key = 'ENTER'
             return key
         except UnicodeDecodeError:
             key = msvcrt.getch().decode()
