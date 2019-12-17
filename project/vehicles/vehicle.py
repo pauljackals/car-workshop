@@ -16,8 +16,7 @@ class Vehicle:
             wheels.append(Wheel())
         self.__wheels = wheels
         self.__engine = Engine()
-        self.__owner = Client()
-        self.__owner.set_vehicle(self)
+        self.__owner = None
 
     def set_owner(self, owner):
         self.__owner = owner

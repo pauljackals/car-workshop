@@ -1,6 +1,7 @@
 import os
 import platform
 
+from people.client import Client
 from people.mechanic import Mechanic
 from vehicles.car import Car
 
@@ -16,7 +17,9 @@ class Main:
             os.system("clear")
 
         car = Car()
-        client = car.get_owner()
+        client = Client()
+        car.set_owner(client)
+        client.set_vehicle(car)
         mechanic = Mechanic()
 
         car.print_info()
