@@ -9,6 +9,8 @@ def read_key():
             key = msvcrt.getch().decode()
             if key == '\r':
                 key = 'ENTER'
+            elif key == '\x1b':
+                key = 'ESC'
             return key
         except UnicodeDecodeError:
             key = msvcrt.getch().decode()
