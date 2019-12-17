@@ -13,45 +13,28 @@ def menu():
         'load',
         'quit'
     ]
-    pick = 0
+    pick_index = 0
+    pick = options[pick_index]
 
     while True:
         clear_console()
         print('CAR WORKSHOP SIMULATOR')
         print()
-        for i in range(len(options)):
+        for i in options:
             if i == pick:
-                print('>>' + options_names[options[i]] + '<<')
+                print('>>' + options_names[i] + '<<')
             else:
-                print('  ' + options_names[options[i]])
+                print('  ' + options_names[i])
 
         key = read_key()
 
-        if key == 'ARROW_DOWN' and pick+1 < len(options):
-            pick += 1
-        elif key == 'ARROW_UP' and pick-1 >= 0:
-            pick -= 1
+        if key == 'ARROW_DOWN' and pick_index+1 < len(options):
+            pick_index += 1
+        elif key == 'ARROW_UP' and pick_index-1 >= 0:
+            pick_index -= 1
         elif key == 'ENTER':
-            if options[pick] == 'quit':
-                clear_console()
-                break
-
-        # key1 = read_key()
-        # if key1 == '\xe0':
-        #     print('ALERT')
-        # key2 = read_key()
-        # # if base == '\xe0':
-        # #     sub = read_key()
-        # #
-        # #     if sub == 'H':
-        # #         key = 'UP_KEY'
-        # #     elif sub == 'M':
-        # #         key = 'RIGHT_KEY'
-        # #     elif sub == 'P':
-        # #         key = 'DOWN_KEY'
-        # #     elif sub == 'K':
-        # #         key = 'LEFT_KEY'
-        # print(key1)
-        # print(key2)
-        # # if key == 'Q':
-        # #     break
+            if pick == 'load':
+                continue
+            clear_console()
+            return pick
+        pick = options[pick_index]
