@@ -4,8 +4,8 @@ from people.person import Person
 
 class Mechanic(Person):
 
-    def __init__(self):
-        super().__init__()
+    def __init__(self, name_first=None, name_last=None):
+        super().__init__(name_first, name_last)
         self.__skill = skills.get_random_skill()
 
     def get_skill(self):
