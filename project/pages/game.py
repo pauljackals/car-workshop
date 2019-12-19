@@ -4,12 +4,13 @@ from pages.read_key import read_key
 from people.mechanic import Mechanic
 
 
-def game(**kwargs):
-    mechanics = []
-    if kwargs['new']:
-        nf = kwargs['data'][0]
-        nl = kwargs['data'][1]
-        mechanics.append(Mechanic(nf, nl))
+# def game(**kwargs):
+def game(session):
+    mechanics = session.get_data()['mechanics']
+    # if kwargs['new']:
+    #     nf = kwargs['data'][0]
+    #     nl = kwargs['data'][1]
+    #     mechanics.append(Mechanic(nf, nl))
 
     while True:
         clear_console()
@@ -17,6 +18,7 @@ def game(**kwargs):
             mechanic.print_info()
         key = read_key()
         if key == 'ESC':
-            pick = menu_ingame()
-            if pick == 'menu':
+            # pick = menu_ingame()
+            menu_ingame(session)
+            if session.get_stage() == 'menu':
                 return 'menu'

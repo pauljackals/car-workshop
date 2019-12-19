@@ -1,8 +1,10 @@
 from pages.clear_console import clear_console
 from pages.read_key import read_key
+from people.mechanic import Mechanic
 
 
-def new():
+def new(session):
+    session.set_new_game(True)
     messages = [
         '*Mechanic Creation*',
         'First name: ',
@@ -38,4 +40,9 @@ def new():
         if key == 'ENTER':
             break
 
-    return name_first, name_last
+    mechanic = Mechanic(name_first, name_last)
+    data = session.get_data()
+    data['mechanics'].append(mechanic)
+    session.set_data(data)
+    return
+    # return name_first, name_last

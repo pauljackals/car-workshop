@@ -2,7 +2,7 @@ from pages.clear_console import clear_console
 from pages.read_key import read_key
 
 
-def menu():
+def menu(session):
     options_names = {
         'quit': 'Quit',
         'new': 'New game',
@@ -36,5 +36,7 @@ def menu():
             if pick == 'load':
                 continue
             clear_console()
-            return pick
+            session.set_stage(pick)
+            return
+            # return pick
         pick = options[pick_index]
