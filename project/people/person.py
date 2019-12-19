@@ -3,12 +3,14 @@ from utils import names, gender
 
 class Person:
 
-    def __init__(self, name_first=None, name_last=None):
-        self.__gender = gender.get_random_gender()
+    def __init__(self, name_first=None, name_last=None, gender_p=None):
+        if gender_p is None:
+            gender_p = gender.get_random_gender()
         if name_first is None:
             name_first = names.get_name_first(self.__gender)
         if name_last is None:
             name_last = names.get_name_last()
+        self.__gender = gender_p
         self.__name_first = name_first
         self.__name_last = name_last
 

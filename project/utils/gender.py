@@ -11,6 +11,10 @@ def get_gender(gender):
     return __genders.get(gender)
 
 
+def get_genders():
+    return __genders
+
+
 def get_random_gender():
     genders = list(__genders.values())
     return genders[random.randint(0, len(genders))-1]

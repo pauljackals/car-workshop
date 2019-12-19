@@ -18,6 +18,10 @@ def read_key():
                 key = 'ARROW_UP'
             elif key == 'P':
                 key = 'ARROW_DOWN'
+            elif key == 'K':
+                key = 'ARROW_LEFT'
+            elif key == 'M':
+                key = 'ARROW_RIGHT'
             else:
                 key = ''
             return key
