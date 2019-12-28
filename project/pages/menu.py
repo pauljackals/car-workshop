@@ -33,10 +33,7 @@ def menu(session):
         elif key == 'ARROW_UP' and pick_index-1 >= 0:
             pick_index -= 1
         elif key == 'ENTER':
-            if pick == 'load':
-                continue
             clear_console()
             session.set_stage(pick)
             return
-            # return pick
         pick = options[pick_index]

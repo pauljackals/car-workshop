@@ -1,7 +1,9 @@
 from pages.clear_console import clear_console
+from pages.load import load
 from pages.menu import menu
 from pages.new import new
 from pages.game import game
+from pages.read_key import read_key
 from pages.session import Session
 
 
@@ -11,25 +13,22 @@ class Main:
     def main():
         clear_console()
         session = Session()
-        # stage = 'menu'
-        #
-        # while True:
-        #     if stage == 'menu':
-        #         stage = menu()
-        #     elif stage == 'new':
-        #         stage = game(new=True, data=new())
-        #     elif stage == 'quit':
-        #         break
+        session.set_stage('menu')
         while True:
-            if session.get_stage() == 'menu':
+            stage = session.get_stage()
+            if stage == 'menu':
                 menu(session)
-            elif session.get_stage() == 'new':
-                # stage = game(new=True, data=new())
+            elif stage == 'new':
                 new(session)
-                game(session)
-                session = Session()
-            elif session.get_stage() == 'quit':
+            elif stage == 'quit':
                 break
+            elif stage == 'game':
+                game(session)
+            elif stage == 'load':
+                if not load(session):
+                    print('No save files!')
+                    read_key()
+                    session.set_stage('menu')
 
 
 if __name__ == "__main__":

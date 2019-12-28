@@ -5,7 +5,7 @@ from utils.gender import get_genders
 
 
 def new(session):
-    session.set_new_game(True)
+    session.flush_data()
     messages = [
         '*Mechanic Creation*',
         'First name: ',
@@ -70,9 +70,9 @@ def new(session):
         if key == 'ENTER':
             break
 
-    mechanic = Mechanic(name_first, name_last, gender)
+    mechanic = Mechanic(name_first, name_last, gender, 30)
     data = session.get_data()
     data['mechanics'].append(mechanic)
     session.set_data(data)
+    session.set_stage('game')
     return
-    # return name_first, name_last

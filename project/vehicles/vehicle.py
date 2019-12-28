@@ -1,7 +1,6 @@
 import random
 import string
 
-from people.client import Client
 from utils import plates
 from vehicles.parts.engine import Engine
 from vehicles.parts.wheel import Wheel

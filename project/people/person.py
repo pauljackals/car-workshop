@@ -17,6 +17,12 @@ class Person:
     def get_name_full(self):
         return self.__name_first + " " + self.__name_last
 
+    def get_name_first(self):
+        return self.__name_first
+
+    def get_name_last(self):
+        return self.__name_last
+
     def get_gender(self):
         return self.__gender
 

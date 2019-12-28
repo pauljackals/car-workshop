@@ -35,14 +35,10 @@ def menu_ingame(session):
         elif key == 'ARROW_UP' and pick_index-1 >= 0:
             pick_index -= 1
         elif key == 'ESC':
-            # return 'game'
             session.set_stage('game')
             return
         elif key == 'ENTER':
-            if pick == 'save' or pick == 'load':
-                continue
             clear_console()
-            # return pick
             session.set_stage(pick)
             return
 
