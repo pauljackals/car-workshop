@@ -17,7 +17,7 @@ def save(session):
                 names.append(line[0:-1])
     while True:
         for i in range(len(names)):
-            print(str(i+1) + "." + names[i])
+            print(str(i+1) + ". " + names[i])
         if len(directory) == 0:
             print('EMPTY!')
         print('\nType save name: ', end='')

@@ -24,7 +24,7 @@ def load(session):
                 print(">>", end='')
             else:
                 print("  ", end='')
-            print(str(i + 1) + "." + names[i])
+            print(str(i + 1) + ". " + names[i])
 
         key = read_key()
 
