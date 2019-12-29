@@ -1,7 +1,7 @@
 from pages.clear_console import clear_console
 from pages.read_key import read_key
 from people.mechanic import Mechanic
-from utils.gender import get_genders
+from utils.genders import get_genders
 
 
 def new(session):
@@ -65,10 +65,9 @@ def new(session):
             print(messages[3] + genders_keys[gender_index])
 
         print()
-        print('Press ENTER to start')
+        print('Press any key to start')
         key = read_key()
-        if key == 'ENTER':
-            break
+        break
 
     mechanic = Mechanic(name_first, name_last, gender, 30)
     data = session.get_data()
