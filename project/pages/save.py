@@ -47,6 +47,7 @@ def save(session):
             data += mechanic.get_name_first()
             data += ';' + mechanic.get_name_last()
             data += ';' + str(mechanic.get_gender())
+            data += ';' + str(mechanic.get_age())
             data += ';' + str(mechanic.get_skill())
             file.write(data+'\n')
     print('Game saved!')

@@ -10,7 +10,8 @@ def new(session):
         '*Mechanic Creation*',
         'First name: ',
         'Last name: ',
-        'Gender: '
+        'Gender: ',
+        'Age: '
     ]
     name_first = None
     name_last = None
@@ -18,6 +19,7 @@ def new(session):
     genders = get_genders()
     genders_keys = list(genders.keys())
     gender_index = 0
+    age = None
     while True:
         clear_console()
         print(messages[0])
@@ -64,12 +66,21 @@ def new(session):
         else:
             print(messages[3] + genders_keys[gender_index])
 
+        if age is None:
+            print(messages[4], end='')
+            temp = input()
+            if temp == '':
+                continue
+            age = temp
+        else:
+            print(messages[4] + age)
+
         print()
         print('Press any key to start')
         key = read_key()
         break
 
-    mechanic = Mechanic(name_first, name_last, gender, 30)
+    mechanic = Mechanic(name_first, name_last, gender, age, 30)
     data = session.get_data()
     data['mechanics'].append(mechanic)
     session.set_data(data)

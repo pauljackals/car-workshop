@@ -44,7 +44,7 @@ def load(session):
                     break
             for i in content[mechanics_start_index:]:
                 mechanic = i.split(';')
-                mechanics.append(Mechanic(mechanic[0], mechanic[1], int(mechanic[2]), int(mechanic[3])))
+                mechanics.append(Mechanic(mechanic[0], mechanic[1], int(mechanic[2]), int(mechanic[3]), int(mechanic[4])))
             data = session.get_data()
             data['mechanics'] = mechanics
             session.set_data(data)
