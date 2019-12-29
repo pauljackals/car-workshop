@@ -87,13 +87,15 @@ def save(session):
         file.write("NEXT_ID\n")
         file.write(str(session.get_objects_id())+"\n")
 
-        file.write("USED_PLATES\n")
-        data = ""
+        file.write("USED_PLATES")
         plates = session.get_data()['used_plates'].get_plates()
-        for plate in plates:
-            data += ";" + plate
-        data = data[1:]
-        file.write(data + '\n')
+        if len(plates) > 0:
+            file.write("\n")
+            data = ''
+            for plate in plates:
+                data += ";" + plate
+            data = data[1:]
+            file.write(data)
 
     print('Game saved!')
     read_key()

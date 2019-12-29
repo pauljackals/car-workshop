@@ -40,6 +40,7 @@ def load(session):
             mechanics = []
             clients = []
             vehicles = []
+            plates = []
             next_id = None
             with open('saves/'+str(directory[pick_index])) as file:
                 content = file.read().splitlines()
@@ -99,7 +100,7 @@ def load(session):
                 elif content[content_index] == 'NEXT_ID':
                     content_index += 1
                     next_id = int(content[content_index])
-                elif content[content_index] == 'USED_PLATES':
+                elif content[content_index] == 'USED_PLATES' and content_index+1 < len(content):
                     content_index += 1
                     plates = content[content_index].split(';')
 
