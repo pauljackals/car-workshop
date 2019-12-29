@@ -126,7 +126,7 @@ def load(session):
             data['clients'] = clients
             data['vehicles'] = vehicles
             data['used_plates'].set_plates(plates)
-            session.get_objects_id(next_id)
+            session.set_objects_id(next_id)
             session.set_data(data)
             session.set_stage('game')
             return True
