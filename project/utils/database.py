@@ -30,7 +30,6 @@ class Database:
     @staticmethod
     def get_element_random(key):
         elements = list(Database.__content.get(key).values())
-        # check for errors
         return elements[random.randint(0, len(elements)-1)]
 
     @staticmethod

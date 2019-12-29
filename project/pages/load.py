@@ -2,13 +2,16 @@ import os
 
 from pages.clear_console import clear_console
 from pages.read_key import read_key
+from people.client import Client
 from people.mechanic import Mechanic
+from vehicles.car import Car
 
 
 def load(session):
     directory = os.listdir("saves")
     if len(directory) == 0:
         return False
+    session.flush_data()
     names = []
     if len(directory) != 0:
         for i in directory:
@@ -35,18 +38,95 @@ def load(session):
         elif key == 'ENTER':
             content = None
             mechanics = []
-            mechanics_start_index = None
+            clients = []
+            vehicles = []
+            next_id = None
             with open('saves/'+str(directory[pick_index])) as file:
                 content = file.read().splitlines()
-            for i in range(len(content)):
-                if content[i] == 'MECHANICS':
-                    mechanics_start_index = i+1
-                    break
-            for i in content[mechanics_start_index:]:
-                mechanic = i.split(';')
-                mechanics.append(Mechanic(mechanic[0], mechanic[1], int(mechanic[2]), int(mechanic[3]), int(mechanic[4])))
+            content_index = 0
+            while content_index < len(content):
+                if content[content_index] == 'MECHANICS':
+                    while content[content_index+1] != 'END':
+                        content_index += 1
+                        mechanic = content[content_index].split(';')
+                        mechanics.append(
+                            Mechanic(
+                                int(mechanic[0]),
+                                mechanic[1],
+                                mechanic[2],
+                                int(mechanic[3]),
+                                int(mechanic[4]),
+                                int(mechanic[5])
+                            )
+                        )
+                elif content[content_index] == 'CLIENTS':
+                    while content[content_index+1] != 'END':
+                        content_index += 1
+                        client = content[content_index].split(';')
+                        clients.append(
+                            (
+                                Client(
+                                    int(client[0]),
+                                    client[1],
+                                    client[2],
+                                    int(client[3]),
+                                    int(client[4])
+                                ),
+                                int(client[5])
+                            )
+                        )
+                elif content[content_index] == 'VEHICLES':
+                    while content[content_index+1] != 'END':
+                        content_index += 1
+                        vehicle = content[content_index].split(';')
+                        if int(vehicle[3]) == 4:
+                            vehicles.append(
+                                (
+                                    Car(
+                                        int(vehicle[0]),
+                                        vehicle[1],
+                                        (
+                                            int(vehicle[4]),
+                                            int(vehicle[5]),
+                                            int(vehicle[6]),
+                                            int(vehicle[7])
+                                        ),
+                                        int(vehicle[2])
+                                    ),
+                                    int(vehicle[8])
+                                )
+                            )
+                elif content[content_index] == 'NEXT_ID':
+                    content_index += 1
+                    next_id = int(content[content_index])
+                elif content[content_index] == 'USED_PLATES':
+                    content_index += 1
+                    plates = content[content_index].split(';')
+
+                content_index += 1
+
+            for i in clients:
+                client = i[0]
+                vehicle_id = i[1]
+                for j in vehicles:
+                    vehicle = j[0]
+                    if vehicle_id == vehicle.get_id():
+                        vehicle.set_owner(client)
+                        client.set_vehicle(vehicle)
+                        break
+
+            for i in range(len(clients)):
+                clients[i] = clients[i][0]
+
+            for i in range(len(vehicles)):
+                vehicles[i] = vehicles[i][0]
+
             data = session.get_data()
             data['mechanics'] = mechanics
+            data['clients'] = clients
+            data['vehicles'] = vehicles
+            data['used_plates'].set_plates(plates)
+            session.get_objects_id(next_id)
             session.set_data(data)
             session.set_stage('game')
             return True

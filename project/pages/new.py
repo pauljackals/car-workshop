@@ -13,6 +13,7 @@ def new(session):
         'Gender: ',
         'Age: '
     ]
+    id_mechanic = session.generate_new_object_id()
     name_first = None
     name_last = None
     gender = None
@@ -80,7 +81,7 @@ def new(session):
         key = read_key()
         break
 
-    mechanic = Mechanic(name_first, name_last, gender, age, 30)
+    mechanic = Mechanic(id_mechanic, name_first, name_last, gender, age, 30)
     data = session.get_data()
     data['mechanics'].append(mechanic)
     session.set_data(data)

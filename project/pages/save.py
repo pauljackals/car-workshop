@@ -40,16 +40,61 @@ def save(session):
 
     with open("saves/"+str(current_save_number), "w") as file:
         file.write(save_name+'\n')
+
         file.write("MECHANICS\n")
         mechanics = session.get_data()['mechanics']
+        data = ''
         for mechanic in mechanics:
-            data = ''
-            data += mechanic.get_name_first()
+            data += str(mechanic.get_id())
+            data += ';' + mechanic.get_name_first()
             data += ';' + mechanic.get_name_last()
             data += ';' + str(mechanic.get_gender())
             data += ';' + str(mechanic.get_age())
             data += ';' + str(mechanic.get_skill())
-            file.write(data+'\n')
+            data += '\n'
+        file.write(data)
+        file.write("END\n")
+
+        file.write("VEHICLES\n")
+        vehicles = session.get_data()['vehicles']
+        data = ''
+        for vehicle in vehicles:
+            data += str(vehicle.get_id())
+            data += ';' + vehicle.get_plate()
+            data += ';' + str(vehicle.get_engine().get_status())
+            data += ';' + str(len(vehicle.get_wheels()))
+            for wheel in vehicle.get_wheels():
+                data += ';' + str(wheel.get_status())
+            data += ';' + str(vehicle.get_owner().get_id())
+            data += '\n'
+        file.write(data)
+        file.write("END\n")
+
+        file.write("CLIENTS\n")
+        clients = session.get_data()['clients']
+        data = ''
+        for client in clients:
+            data += str(client.get_id())
+            data += ';' + client.get_name_first()
+            data += ';' + client.get_name_last()
+            data += ';' + str(client.get_gender())
+            data += ';' + str(client.get_age())
+            data += ';' + str(client.get_vehicle().get_id())
+            data += '\n'
+        file.write(data)
+        file.write("END\n")
+
+        file.write("NEXT_ID\n")
+        file.write(str(session.get_objects_id())+"\n")
+
+        file.write("USED_PLATES\n")
+        data = ""
+        plates = session.get_data()['used_plates'].get_plates()
+        for plate in plates:
+            data += ";" + plate
+        data = data[1:]
+        file.write(data + '\n')
+
     print('Game saved!')
     read_key()
     session.set_stage('menu_ingame')

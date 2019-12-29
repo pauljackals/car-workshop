@@ -1,30 +1,25 @@
-# def register(plate):
-#     if __plates.count(plate) == 0:
-#         __plates.append(plate)
-#         return True
-#     else:
-#         return False
-#
-#
-# __plates = []
+import string
+import random
 
 
 class Plates:
 
-    __plates = []
+    def __init__(self):
+        self.__plates = []
 
-    @staticmethod
-    def register(plate):
-        if Plates.__plates.count(plate) == 0:
-            Plates.__plates.append(plate)
-            return True
-        else:
-            return False
+    def get_new_plate(self):
+        while True:
+            plate = ""
+            for i in range(2):
+                plate += random.choice(string.ascii_uppercase)
+            for i in range(5):
+                plate += random.choice(string.digits)
+            if self.__plates.count(plate) == 0:
+                self.__plates.append(plate)
+                return plate
 
-    @staticmethod
-    def set_plates(plates):
-        Plates.__plates = plates
+    def set_plates(self, plates):
+        self.__plates = plates
 
-    @staticmethod
-    def get_plates():
-        return Plates.__plates
+    def get_plates(self):
+        return self.__plates

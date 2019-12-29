@@ -3,8 +3,8 @@ from people.person import Person
 
 class Client(Person):
 
-    def __init__(self):
-        super().__init__()
+    def __init__(self, id_client, name_first=None, name_last=None, gender=None, age=None):
+        super().__init__(id_client, name_first, name_last, gender, age)
         self.__vehicle = None
 
     def get_vehicle(self):

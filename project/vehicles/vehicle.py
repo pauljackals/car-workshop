@@ -8,14 +8,25 @@ from vehicles.parts.wheel import Wheel
 
 class Vehicle:
 
-    def __init__(self, wheel_number):
-        self.__plate = self.__random_plate()
-        wheels = []
+    def __init__(self, id_vehicle, plate, wheel_number, wheels, engine):
+        self.__id = id_vehicle
+        self.__plate = plate
+        wheels_new = []
         for i in range(wheel_number):
-            wheels.append(Wheel())
-        self.__wheels = wheels
-        self.__engine = Engine()
+            if wheels is None:
+                wheels_new.append(Wheel())
+            else:
+                wheels_new.append(Wheel(wheels[i]))
+        self.__wheels = wheels_new
+        if engine is None:
+            engine = Engine()
+        else:
+            engine = Engine(engine)
+        self.__engine = engine
         self.__owner = None
+
+    def get_id(self):
+        return self.__id
 
     def set_owner(self, owner):
         self.__owner = owner
@@ -40,14 +51,3 @@ class Vehicle:
             print("wheel " + str(i+1) + " (" + str(wheel.get_status()) + "%)")
         print(self.__owner.get_name_full())
 
-    @staticmethod
-    def __random_plate():
-        while True:
-            plate = ""
-            for i in range(2):
-                plate += random.choice(string.ascii_uppercase)
-            for i in range(5):
-                plate += random.choice(string.digits)
-            if Plates.register(plate):
-                break
-        return plate
