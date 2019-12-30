@@ -7,6 +7,22 @@ from people.mechanic import Mechanic
 from vehicles.car import Car
 
 
+def mechanic_load(content, content_index, mechanics):
+    while content[content_index + 1] != 'END':
+        content_index += 1
+        mechanic = content[content_index].split(';')
+        mechanics.append(
+            Mechanic(
+                int(mechanic[0]),
+                mechanic[1],
+                mechanic[2],
+                int(mechanic[3]),
+                int(mechanic[4]),
+                int(mechanic[5])
+            )
+        )
+
+
 def load(session):
     directory = os.listdir("saves")
     if len(directory) == 0:
@@ -37,7 +53,10 @@ def load(session):
             pick_index -= 1
         elif key == 'ENTER':
             content = None
+            turn = None
+            money = None
             mechanics = []
+            to_hire = []
             clients = []
             vehicles = []
             plates = []
@@ -47,19 +66,35 @@ def load(session):
             content_index = 0
             while content_index < len(content):
                 if content[content_index] == 'MECHANICS':
-                    while content[content_index+1] != 'END':
-                        content_index += 1
-                        mechanic = content[content_index].split(';')
-                        mechanics.append(
-                            Mechanic(
-                                int(mechanic[0]),
-                                mechanic[1],
-                                mechanic[2],
-                                int(mechanic[3]),
-                                int(mechanic[4]),
-                                int(mechanic[5])
-                            )
-                        )
+                    mechanic_load(content, content_index, mechanics)
+                    # while content[content_index+1] != 'END':
+                    #     content_index += 1
+                    #     mechanic = content[content_index].split(';')
+                    #     mechanics.append(
+                    #         Mechanic(
+                    #             int(mechanic[0]),
+                    #             mechanic[1],
+                    #             mechanic[2],
+                    #             int(mechanic[3]),
+                    #             int(mechanic[4]),
+                    #             int(mechanic[5])
+                    #         )
+                    #     )
+                elif content[content_index] == 'TO_HIRE':
+                    mechanic_load(content, content_index, to_hire)
+                    # while content[content_index+1] != 'END':
+                    #     content_index += 1
+                    #     mechanic = content[content_index].split(';')
+                    #     to_hire.append(
+                    #         Mechanic(
+                    #             int(mechanic[0]),
+                    #             mechanic[1],
+                    #             mechanic[2],
+                    #             int(mechanic[3]),
+                    #             int(mechanic[4]),
+                    #             int(mechanic[5])
+                    #         )
+                    #     )
                 elif content[content_index] == 'CLIENTS':
                     while content[content_index+1] != 'END':
                         content_index += 1
@@ -100,6 +135,12 @@ def load(session):
                 elif content[content_index] == 'NEXT_ID':
                     content_index += 1
                     next_id = int(content[content_index])
+                elif content[content_index] == 'TURN':
+                    content_index += 1
+                    turn = int(content[content_index])
+                elif content[content_index] == 'MONEY':
+                    content_index += 1
+                    money = int(content[content_index])
                 elif content[content_index] == 'USED_PLATES' and content_index+1 < len(content):
                     content_index += 1
                     plates = content[content_index].split(';')
@@ -124,10 +165,12 @@ def load(session):
 
             data = session.get_data()
             data['mechanics'] = mechanics
+            data['to_hire'] = to_hire
             data['clients'] = clients
             data['vehicles'] = vehicles
             data['used_plates'].set_plates(plates)
             session.set_objects_id(next_id)
-            session.set_data(data)
+            session.set_turn(turn)
+            session.set_money(money)
             session.set_stage('game')
             return True

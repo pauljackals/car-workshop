@@ -1,7 +1,9 @@
 from pages.clear_console import clear_console
 from pages.read_key import read_key
+from people.client import Client
 from people.mechanic import Mechanic
 from utils.genders import get_genders
+from vehicles.car import Car
 
 
 def new(session):
@@ -78,12 +80,20 @@ def new(session):
 
         print()
         print('Press any key to start')
-        key = read_key()
+        read_key()
         break
 
     mechanic = Mechanic(id_mechanic, name_first, name_last, gender, age, 30)
     data = session.get_data()
     data['mechanics'].append(mechanic)
-    session.set_data(data)
+
+    new_client = Client(session.generate_new_object_id())
+    new_car = Car(session.generate_new_object_id(), session.get_data()['used_plates'].get_new_plate())
+    new_car.set_owner(new_client)
+    new_client.set_vehicle(new_car)
+
+    data['clients'].append(new_client)
+    data['vehicles'].append(new_car)
+
     session.set_stage('game')
     return

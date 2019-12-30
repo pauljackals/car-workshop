@@ -4,6 +4,19 @@ from pages.clear_console import clear_console
 from pages.read_key import read_key
 
 
+def mechanic_get_data(mechanics):
+    data = ''
+    for mechanic in mechanics:
+        data += str(mechanic.get_id())
+        data += ';' + mechanic.get_name_first()
+        data += ';' + mechanic.get_name_last()
+        data += ';' + str(mechanic.get_gender())
+        data += ';' + str(mechanic.get_age())
+        data += ';' + str(mechanic.get_skill())
+        data += '\n'
+    return data
+
+
 def save(session):
     current_save_number = 0
     save_name = None
@@ -43,15 +56,22 @@ def save(session):
 
         file.write("MECHANICS\n")
         mechanics = session.get_data()['mechanics']
-        data = ''
-        for mechanic in mechanics:
-            data += str(mechanic.get_id())
-            data += ';' + mechanic.get_name_first()
-            data += ';' + mechanic.get_name_last()
-            data += ';' + str(mechanic.get_gender())
-            data += ';' + str(mechanic.get_age())
-            data += ';' + str(mechanic.get_skill())
-            data += '\n'
+        data = mechanic_get_data(mechanics)
+        # data = ''
+        # for mechanic in mechanics:
+        #     data += str(mechanic.get_id())
+        #     data += ';' + mechanic.get_name_first()
+        #     data += ';' + mechanic.get_name_last()
+        #     data += ';' + str(mechanic.get_gender())
+        #     data += ';' + str(mechanic.get_age())
+        #     data += ';' + str(mechanic.get_skill())
+        #     data += '\n'
+        file.write(data)
+        file.write("END\n")
+
+        file.write("TO_HIRE\n")
+        to_hire = session.get_data()['to_hire']
+        data = mechanic_get_data(to_hire)
         file.write(data)
         file.write("END\n")
 
@@ -86,6 +106,11 @@ def save(session):
 
         file.write("NEXT_ID\n")
         file.write(str(session.get_objects_id())+"\n")
+
+        file.write("TURN\n")
+        file.write(str(session.get_turn())+"\n")
+        file.write("MONEY\n")
+        file.write(str(session.get_money())+"\n")
 
         file.write("USED_PLATES")
         plates = session.get_data()['used_plates'].get_plates()
