@@ -67,34 +67,8 @@ def load(session):
             while content_index < len(content):
                 if content[content_index] == 'MECHANICS':
                     mechanic_load(content, content_index, mechanics)
-                    # while content[content_index+1] != 'END':
-                    #     content_index += 1
-                    #     mechanic = content[content_index].split(';')
-                    #     mechanics.append(
-                    #         Mechanic(
-                    #             int(mechanic[0]),
-                    #             mechanic[1],
-                    #             mechanic[2],
-                    #             int(mechanic[3]),
-                    #             int(mechanic[4]),
-                    #             int(mechanic[5])
-                    #         )
-                    #     )
                 elif content[content_index] == 'TO_HIRE':
                     mechanic_load(content, content_index, to_hire)
-                    # while content[content_index+1] != 'END':
-                    #     content_index += 1
-                    #     mechanic = content[content_index].split(';')
-                    #     to_hire.append(
-                    #         Mechanic(
-                    #             int(mechanic[0]),
-                    #             mechanic[1],
-                    #             mechanic[2],
-                    #             int(mechanic[3]),
-                    #             int(mechanic[4]),
-                    #             int(mechanic[5])
-                    #         )
-                    #     )
                 elif content[content_index] == 'CLIENTS':
                     while content[content_index+1] != 'END':
                         content_index += 1

@@ -57,15 +57,6 @@ def save(session):
         file.write("MECHANICS\n")
         mechanics = session.get_data()['mechanics']
         data = mechanic_get_data(mechanics)
-        # data = ''
-        # for mechanic in mechanics:
-        #     data += str(mechanic.get_id())
-        #     data += ';' + mechanic.get_name_first()
-        #     data += ';' + mechanic.get_name_last()
-        #     data += ';' + str(mechanic.get_gender())
-        #     data += ';' + str(mechanic.get_age())
-        #     data += ';' + str(mechanic.get_skill())
-        #     data += '\n'
         file.write(data)
         file.write("END\n")
 
