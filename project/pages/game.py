@@ -80,12 +80,6 @@ def shop(session):
             else:
                 print('  ' + shop_list[i] + ' kit (' + str(prices[i]) + '$)  ')
 
-        # for i in range(len(mechanics)):
-        #     price = mechanics[i].get_skill() * 5
-        #     if index == i:
-        #         print('>>' + mechanics[i].get_name_first() + ' (' + str(price) + '$)<<')
-        #     else:
-        #         print('  ' + mechanics[i].get_name_first() + ' (' + str(price) + '$)')
         print()
 
         key = read_key()
@@ -214,10 +208,6 @@ def game(session):
 
         if pick_row == 1:
             get_print_mechanic(element, middle_to_print)
-            # middle_to_print.append(element.get_name_full())
-            # middle_to_print.append(genders.get_gender_name(element.get_gender()))
-            # middle_to_print.append(str(element.get_age())+'yr')
-            # middle_to_print.append(skills.get_skill_name(element.get_skill()) + " (" + str(element.get_skill()) + ")")
         elif pick_row == 2:
             middle_to_print.append(element.get_plate())
             middle_to_print.append("engine (" + str(element.get_engine().get_status()) + "%)")
@@ -338,9 +328,6 @@ def game(session):
         elif key == 'ENTER' and pick_row == 0 and screen[0][pick_element] == 'shop':
             shop(session)
 
-        # elif key == 'm':
-        #     new_mechanic = Mechanic(session.generate_new_object_id())
-        #     mechanics.append(new_mechanic)
         elif pick_row == 0 and key == 'ARROW_LEFT' and pick_element-1 >= 0:
             pick_element -= 1
         elif pick_row == 0 and key == 'ARROW_RIGHT' and pick_element+1 < len(screen[0]):

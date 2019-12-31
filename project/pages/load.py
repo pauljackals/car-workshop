@@ -96,17 +96,6 @@ def load(session):
                         for i in range(len(temp)):
                             temp[i] = int(temp[i])
                         to_fix.append(temp)
-                        # mechanic = None
-                        # for i in vehicles:
-                        #     if i[0].get_id() == int(to_fix_single[0]):
-                        #         vehicle = i
-                        #         break
-                        # for i in mechanics:
-                        #     if i.get_id() == int(to_fix_single[1]):
-                        #         mechanic = i
-                        #         break
-                        # to_fix_single = [vehicle, mechanic]
-                        # to_fix.append(to_fix_single)
 
                 elif content[content_index] == 'VEHICLES':
                     while content[content_index+1] != 'END':
