@@ -57,21 +57,75 @@ def hire(session):
             return
 
 
+def shop(session):
+    kits = session.get_data()['kits']
+    shop_list = list(kits.keys())
+    # shop_list.append(kits_wheel)
+    # shop_list.append(kits_engine)
+    prices = [10, 50]
+    index = 0
+    while True:
+        kits_wheel = session.get_data()['kits']['wheel']
+        kits_engine = session.get_data()['kits']['engine']
+        money = session.get_money()
+        clear_console()
+        print(str(money) + '$')
+        print('wheel kits x' + str(kits_wheel))
+        print('engine kits x' + str(kits_engine))
+        print()
+
+        for i in range(len(shop_list)):
+            if index == i:
+                print('>>' + shop_list[i] + ' kit (' + str(prices[i]) + '$)<<')
+            else:
+                print('  ' + shop_list[i] + ' kit (' + str(prices[i]) + '$)  ')
+
+        # for i in range(len(mechanics)):
+        #     price = mechanics[i].get_skill() * 5
+        #     if index == i:
+        #         print('>>' + mechanics[i].get_name_first() + ' (' + str(price) + '$)<<')
+        #     else:
+        #         print('  ' + mechanics[i].get_name_first() + ' (' + str(price) + '$)')
+        print()
+
+        key = read_key()
+
+        if key == 'ARROW_UP' and index - 1 >= 0:
+            index -= 1
+        elif key == 'ARROW_DOWN' and index + 1 < len(shop_list):
+            index += 1
+        elif key == 'ENTER' and prices[index] <= money:
+            session.set_money(money - prices[index])
+            kits[shop_list[index]] = kits[shop_list[index]] + 1
+        elif key == 'ESC':
+            return
+
+
+def is_to_fix(to_fix, element):
+    for i in to_fix:
+        for j in i:
+            if j == element:
+                return True
+    return False
+
+
 def game(session):
     mechanics = session.get_data()['mechanics']
     vehicles = session.get_data()['vehicles']
     clients = session.get_data()['clients']
     to_hire = session.get_data()['to_hire']
+    to_fix = session.get_data()['to_fix']
 
     button_names = {
         'turn': 'New turn',
         'placeholder': 'placeholder',
         'hire': 'Hire mechanic',
+        'fix': 'Repair',
         'shop': 'Visit shop'
     }
 
     top = [
-        'placeholder',
+        'fix',
         'hire',
         'shop',
         'turn'
@@ -88,17 +142,23 @@ def game(session):
     pick_row = 0
     pick_element = 0
 
+    is_fix = False
+
     while True:
         if session.get_money() < 0:
             game_over(session)
             return
+
+        kits_wheel = session.get_data()['kits']['wheel']
+        kits_engine = session.get_data()['kits']['engine']
+
         clear_console()
 
         middle_to_print = []
         middle_to_print_line = ''
         for i in range(len(screen[0])):
             string = button_names.get(screen[0][i])
-            if pick_row == 0 and pick_element == i:
+            if (pick_row == 0 and pick_element == i) or (is_fix and screen[0][i] == 'fix'):
                 middle_to_print_line += ">>" + string + "<<"
             else:
                 middle_to_print_line += "  " + string + "  "
@@ -125,15 +185,23 @@ def game(session):
                 string = screen[2][i].get_plate()
             else:
                 string = '       '
-            if pick_row == 2 and pick_element == i:
+            if (pick_row == 2 and pick_element == i) or (is_fix and pick_row == 1 and to_fix[len(to_fix)-1][0] is screen[2][i]):
                 middle_to_print_line += ">>" + string + "<<"
             else:
                 middle_to_print_line += "  " + string + "  "
             middle_to_print.append(middle_to_print_line)
 
+        if len(to_fix) > 0:
+            middle_to_print.append('')
+        for i in to_fix:
+            if len(i) == 2:
+                middle_to_print.append(i[1].get_name_full() + ' is reparing ' + i[0].get_plate())
+
         middle_to_print.append('')
         middle_to_print.append('TURN: ' + str(session.get_turn()))
         middle_to_print.append(str(session.get_money()) + '$')
+        middle_to_print.append('wheel kits x' + str(kits_wheel))
+        middle_to_print.append('engine kits x' + str(kits_engine))
         middle_to_print_line = ''
         for i in range(top_length):
             middle_to_print_line += '-'
@@ -165,7 +233,7 @@ def game(session):
             print(i)
 
         key = read_key()
-        if key == 'ESC':
+        if key == 'ESC' and not is_fix:
             while True:
                 menu_ingame(session)
                 if session.get_stage() == 'menu':
@@ -180,15 +248,68 @@ def game(session):
                         return
                 else:
                     break
+
+        elif key == 'ESC' and is_fix:
+            if pick_row == 2:
+                is_fix = False
+                pick_row = 0
+                pick_element = 0
+            elif pick_row == 1:
+                pick_row = 2
+                to_fix.pop(len(to_fix) - 1)
+
+        elif is_fix and pick_row == 2 and key == 'ENTER':
+            if not is_to_fix(to_fix, screen[2][pick_element]):
+                to_fix.append([screen[2][pick_element]])
+                pick_row = 1
+                pick_element = 0
+
+        elif is_fix and pick_row == 1 and key == 'ENTER':
+            mechanic = screen[1][pick_element]
+            if not is_to_fix(to_fix, mechanic):
+                if mechanic.prepare(session, to_fix[-1][0]):
+                    to_fix[-1].append(mechanic)
+                    pick_row = 0
+                    pick_element = 0
+                    is_fix = False
+
+        elif key == 'ENTER' and pick_row == 0 and len(screen[1])*len(screen[2]) > 0 and screen[0][pick_element] == 'fix'\
+                and len(to_fix) < len(mechanics) and len(to_fix) < len(vehicles):
+            is_fix = True
+            pick_row = 2
+            pick_element = 0
+
         elif key == 'ENTER' and pick_row == 0 and screen[0][pick_element] == 'turn':
-            new_client = Client(session.generate_new_object_id())
-            new_car = Car(session.generate_new_object_id(), session.get_data()['used_plates'].get_new_plate())
 
-            new_car.set_owner(new_client)
-            new_client.set_vehicle(new_car)
+            for i in to_fix:
+                is_ready = True
+                vehicle = i[0]
+                i[1].repair(session, vehicle)
+                if vehicle.get_engine().get_status() != 100:
+                    is_ready = False
+                if is_ready:
+                    for wheel in vehicle.get_wheels():
+                        if wheel.get_status() != 100:
+                            is_ready = False
+                            break
+                if is_ready:
+                    for j in range(len(screen[2])):
+                        if screen[2][j] is vehicle:
+                            screen[2].pop(j)
+                            break
+                    session.set_money(session.get_money() + 300)
+            if len(to_fix) > 0:
+                to_fix = []
 
-            clients.append(new_client)
-            vehicles.append(new_car)
+            if random.randint(0, 9) < 7:
+                new_client = Client(session.generate_new_object_id())
+                new_car = Car(session.generate_new_object_id(), session.get_data()['used_plates'].get_new_plate())
+
+                new_car.set_owner(new_client)
+                new_client.set_vehicle(new_car)
+
+                clients.append(new_client)
+                vehicles.append(new_car)
             pick_element = 0
             session.set_turn(session.get_turn()+1)
             cost = 50
@@ -203,9 +324,12 @@ def game(session):
         elif key == 'ENTER' and pick_row == 0 and screen[0][pick_element] == 'hire' and len(to_hire) > 0:
             hire(session)
 
-        elif key == 'm':
-            new_mechanic = Mechanic(session.generate_new_object_id())
-            mechanics.append(new_mechanic)
+        elif key == 'ENTER' and pick_row == 0 and screen[0][pick_element] == 'shop':
+            shop(session)
+
+        # elif key == 'm':
+        #     new_mechanic = Mechanic(session.generate_new_object_id())
+        #     mechanics.append(new_mechanic)
         elif pick_row == 0 and key == 'ARROW_LEFT' and pick_element-1 >= 0:
             pick_element -= 1
         elif pick_row == 0 and key == 'ARROW_RIGHT' and pick_element+1 < len(screen[0]):
@@ -220,7 +344,7 @@ def game(session):
 
         elif (pick_row == 1 or pick_row == 2) and key == 'ARROW_UP' and pick_element-1 >= 0:
             pick_element -= 1
-        elif (pick_row == 1 or pick_row == 2) and key == 'ARROW_UP' and pick_element-1 < 0:
+        elif (pick_row == 1 or pick_row == 2) and key == 'ARROW_UP' and pick_element-1 < 0 and not is_fix:
             if pick_row == 1:
                 pick_element = 0
             elif pick_row == 2:
@@ -230,11 +354,11 @@ def game(session):
               or
               (pick_row == 2 and pick_element+1 < len(screen[2]))) and key == 'ARROW_DOWN':
             pick_element += 1
-        elif pick_row == 1 and key == 'ARROW_RIGHT' and len(screen[2]) > 0:
+        elif pick_row == 1 and key == 'ARROW_RIGHT' and len(screen[2]) > 0 and not is_fix:
             pick_row = 2
             if pick_element >= len(screen[2]):
                 pick_element = len(screen[2])-1
-        elif pick_row == 2 and key == 'ARROW_LEFT' and len(screen[1]) > 0:
+        elif pick_row == 2 and key == 'ARROW_LEFT' and len(screen[1]) > 0 and not is_fix:
             pick_row = 1
             if pick_element >= len(screen[1]):
                 pick_element = len(screen[1])-1

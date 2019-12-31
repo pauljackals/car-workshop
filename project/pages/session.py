@@ -9,7 +9,12 @@ class Session:
             'vehicles': [],
             'clients': [],
             'used_plates': Plates(),
-            'to_hire': []
+            'to_fix': [],
+            'to_hire': [],
+            'kits': {
+                'wheel': 4,
+                'engine': 1
+            }
         }
         self.__objects_id = 0
         self.__turn = 1
