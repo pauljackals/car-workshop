@@ -185,7 +185,8 @@ def game(session):
                 string = screen[2][i].get_plate()
             else:
                 string = '       '
-            if (pick_row == 2 and pick_element == i) or (is_fix and pick_row == 1 and to_fix[len(to_fix)-1][0] is screen[2][i]):
+            if (pick_row == 2 and pick_element == i)\
+                    or (i < len(screen[2]) and is_fix and pick_row == 1 and to_fix[len(to_fix)-1][0] is screen[2][i]):
                 middle_to_print_line += ">>" + string + "<<"
             else:
                 middle_to_print_line += "  " + string + "  "
@@ -256,6 +257,7 @@ def game(session):
                 pick_element = 0
             elif pick_row == 1:
                 pick_row = 2
+                pick_element = 0
                 to_fix.pop(len(to_fix) - 1)
 
         elif is_fix and pick_row == 2 and key == 'ENTER':
@@ -284,7 +286,7 @@ def game(session):
             for i in to_fix:
                 is_ready = True
                 vehicle = i[0]
-                i[1].repair(session, vehicle)
+                i[1].repair(vehicle)
                 if vehicle.get_engine().get_status() != 100:
                     is_ready = False
                 if is_ready:
@@ -295,13 +297,22 @@ def game(session):
                 if is_ready:
                     for j in range(len(screen[2])):
                         if screen[2][j] is vehicle:
+                            client_to_delete = screen[2][j].get_owner()
+                            for k in range(len(clients)):
+                                if clients[k] is client_to_delete:
+                                    clients.pop(k)
+                                    break
                             screen[2].pop(j)
                             break
-                    session.set_money(session.get_money() + 300)
+                    session.set_money(session.get_money() + 200)
             if len(to_fix) > 0:
-                to_fix = []
+                to_fix.clear()
 
-            if random.randint(0, 9) < 7:
+            var = session.get_turn() // 5 + 1
+            if random.randint(0, 9) < 3:
+                var *= 2
+
+            for i in range(var):
                 new_client = Client(session.generate_new_object_id())
                 new_car = Car(session.generate_new_object_id(), session.get_data()['used_plates'].get_new_plate())
 
@@ -312,12 +323,12 @@ def game(session):
                 vehicles.append(new_car)
             pick_element = 0
             session.set_turn(session.get_turn()+1)
-            cost = 50
+            cost = 100
             for i in mechanics:
                 cost += i.get_skill()
             session.set_money(session.get_money()-cost)
 
-            if random.randint(0, 9) < 7:
+            if random.randint(0, 9) < 6:
                 new_mechanic = Mechanic(session.generate_new_object_id())
                 to_hire.append(new_mechanic)
 

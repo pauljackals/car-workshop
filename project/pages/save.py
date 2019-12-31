@@ -13,6 +13,9 @@ def mechanic_get_data(mechanics):
         data += ';' + str(mechanic.get_gender())
         data += ';' + str(mechanic.get_age())
         data += ';' + str(mechanic.get_skill())
+        kits = mechanic.get_kits()
+        data += ';' + str(kits[0])
+        data += ';' + str(kits[1])
         data += '\n'
     return data
 
@@ -95,6 +98,14 @@ def save(session):
         file.write(data)
         file.write("END\n")
 
+        file.write("TO_FIX\n")
+        to_fix = session.get_data()['to_fix']
+        data = ''
+        for i in to_fix:
+            data += (str(i[0].get_id()) + ';' + str(i[1].get_id()) + '\n')
+        file.write(data)
+        file.write("END\n")
+
         file.write("NEXT_ID\n")
         file.write(str(session.get_objects_id())+"\n")
 
@@ -102,6 +113,13 @@ def save(session):
         file.write(str(session.get_turn())+"\n")
         file.write("MONEY\n")
         file.write(str(session.get_money())+"\n")
+
+        file.write("KITS\n")
+        data = ''
+        for i in list(session.get_data()['kits'].keys()):
+            data += ';' + str(session.get_data()['kits'][i])
+        data = data[1:]+'\n'
+        file.write(data)
 
         file.write("USED_PLATES")
         plates = session.get_data()['used_plates'].get_plates()

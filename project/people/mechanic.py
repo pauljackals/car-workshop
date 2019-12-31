@@ -4,7 +4,7 @@ from people.person import Person
 
 class Mechanic(Person):
 
-    def __init__(self, id_mechanic, name_first=None, name_last=None, gender=None, age=None, skill=None, kits_engine=0, kits_wheel=0):
+    def __init__(self, id_mechanic, name_first=None, name_last=None, gender=None, age=None, skill=None, kits_wheel=0, kits_engine=0):
         super().__init__(id_mechanic, name_first, name_last, gender, age)
         if skill is None:
             skill = skills.get_random_skill()
@@ -31,7 +31,7 @@ class Mechanic(Person):
             return True
         return False
 
-    def repair(self, session, vehicle):
+    def repair(self, vehicle):
         if self.__kits_engine > 0:
             self.__kits_engine -= 1
             vehicle.get_engine().set_status(100)
@@ -41,6 +41,13 @@ class Mechanic(Person):
                 wheel.set_status(100)
             if self.__kits_wheel == 0:
                 break
+
+    def get_kits(self):
+        return self.__kits_wheel, self.__kits_engine
+
+    def set_kits(self, kits):
+        self.__kits_wheel = kits[0]
+        self.__kits_engine = kits[1]
 
     def print_info(self):
         super().print_info()

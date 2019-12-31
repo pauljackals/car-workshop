@@ -18,7 +18,9 @@ def mechanic_load(content, content_index, mechanics):
                 mechanic[2],
                 int(mechanic[3]),
                 int(mechanic[4]),
-                int(mechanic[5])
+                int(mechanic[5]),
+                int(mechanic[6]),
+                int(mechanic[7])
             )
         )
 
@@ -55,8 +57,10 @@ def load(session):
             content = None
             turn = None
             money = None
+            kits = None
             mechanics = []
             to_hire = []
+            to_fix = []
             clients = []
             vehicles = []
             plates = []
@@ -85,6 +89,25 @@ def load(session):
                                 int(client[5])
                             )
                         )
+                elif content[content_index] == 'TO_FIX':
+                    while content[content_index+1] != 'END':
+                        content_index += 1
+                        temp = content[content_index].split(';')
+                        for i in range(len(temp)):
+                            temp[i] = int(temp[i])
+                        to_fix.append(temp)
+                        # mechanic = None
+                        # for i in vehicles:
+                        #     if i[0].get_id() == int(to_fix_single[0]):
+                        #         vehicle = i
+                        #         break
+                        # for i in mechanics:
+                        #     if i.get_id() == int(to_fix_single[1]):
+                        #         mechanic = i
+                        #         break
+                        # to_fix_single = [vehicle, mechanic]
+                        # to_fix.append(to_fix_single)
+
                 elif content[content_index] == 'VEHICLES':
                     while content[content_index+1] != 'END':
                         content_index += 1
@@ -115,6 +138,11 @@ def load(session):
                 elif content[content_index] == 'MONEY':
                     content_index += 1
                     money = int(content[content_index])
+                elif content[content_index] == 'KITS':
+                    content_index += 1
+                    kits = content[content_index].split(';')
+                    for i in range(len(kits)):
+                        kits[i] = int(kits[i])
                 elif content[content_index] == 'USED_PLATES' and content_index+1 < len(content):
                     content_index += 1
                     plates = content[content_index].split(';')
@@ -137,14 +165,33 @@ def load(session):
             for i in range(len(vehicles)):
                 vehicles[i] = vehicles[i][0]
 
+            for i in range(len(to_fix)):
+                vehicle = None
+                mechanic = None
+
+                for j in vehicles:
+                    if j.get_id() == to_fix[i][0]:
+                        vehicle = j
+                        break
+                for j in mechanics:
+                    if j.get_id() == to_fix[i][1]:
+                        mechanic = j
+                        break
+                to_fix[i] = [vehicle, mechanic]
+
             data = session.get_data()
             data['mechanics'] = mechanics
             data['to_hire'] = to_hire
             data['clients'] = clients
+            data['to_fix'] = to_fix
             data['vehicles'] = vehicles
             data['used_plates'].set_plates(plates)
             session.set_objects_id(next_id)
             session.set_turn(turn)
             session.set_money(money)
+
+            for i in range(len(list(data['kits'].keys()))):
+                data['kits'][list(data['kits'].keys())[i]] = kits[i]
+
             session.set_stage('game')
             return True

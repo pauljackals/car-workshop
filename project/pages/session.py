@@ -18,7 +18,7 @@ class Session:
         }
         self.__objects_id = 0
         self.__turn = 1
-        self.__money = 200
+        self.__money = 500
 
     def get_stage(self):
         return self.__stage
