@@ -1,4 +1,5 @@
 import random
+import string
 
 from utils.file_reader import FileReader
 
@@ -23,5 +24,12 @@ class Names:
     @staticmethod
     def __get_random_name(key):
         content = Names.__names.get(key)
-        picked_name = content[random.randint(0, len(content) - 1)]
-        return picked_name
+        try:
+            picked_name = content[random.randint(0, len(content) - 1)]
+            return picked_name
+        except TypeError:
+            picked_name = random.choice(string.ascii_uppercase)
+            number = 2 + random.randint(1, 4)
+            for i in range(number):
+                picked_name += random.choice(string.ascii_lowercase)
+            return picked_name
