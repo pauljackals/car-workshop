@@ -25,5 +25,3 @@ def read_key():
             else:
                 key = ''
             return key
-    elif system == "Linux":
-        pass

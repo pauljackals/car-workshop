@@ -1,3 +1,5 @@
+import platform
+
 from pages.clear_console import clear_console
 from pages.load import load
 from pages.menu import menu
@@ -11,6 +13,9 @@ class Main:
 
     @staticmethod
     def main():
+        if platform.system() != 'Windows':
+            print('Only Windows supported!')
+            return
         clear_console()
         session = Session()
         session.set_stage('menu')
@@ -21,7 +26,7 @@ class Main:
             elif stage == 'new':
                 new(session)
             elif stage == 'quit':
-                break
+                return
             elif stage == 'game':
                 game(session)
             elif stage == 'load':
