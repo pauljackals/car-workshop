@@ -6,6 +6,14 @@ from utils.genders import get_genders
 from vehicles.car import Car
 
 
+def check_for_illegal_characters(string, *args):
+    for character in string:
+        for illegal in args:
+            if character == illegal:
+                return False
+    return True
+
+
 def new(session):
     session.flush_data()
     messages = [
@@ -30,7 +38,8 @@ def new(session):
         if name_first is None:
             print(messages[1], end='')
             temp = input()
-            if temp == '':
+
+            if temp == '' or not check_for_illegal_characters(temp, ';', ' '):
                 continue
             name_first = temp
         else:
@@ -39,7 +48,7 @@ def new(session):
         if name_last is None:
             print(messages[2], end='')
             temp = input()
-            if temp == '':
+            if temp == '' or not check_for_illegal_characters(temp, ';', ' '):
                 continue
             name_last = temp
         else:
@@ -71,8 +80,11 @@ def new(session):
 
         if age is None:
             print(messages[4], end='')
-            temp = input()
-            if temp == '':
+            try:
+                temp = int(input())
+            except ValueError:
+                continue
+            if temp == '' or temp < 18:
                 continue
             age = temp
         else:
