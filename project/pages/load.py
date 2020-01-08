@@ -26,7 +26,14 @@ def mechanic_load(content, content_index, mechanics):
 
 
 def load(session):
-    directory = os.listdir("saves")
+    directory = None
+
+    try:
+        directory = os.listdir("saves")
+    except FileNotFoundError:
+        os.mkdir("saves")
+        directory = os.listdir("saves")
+
     if len(directory) == 0:
         return False
     session.flush_data()

@@ -24,7 +24,14 @@ def save(session):
     current_save_number = 0
     save_name = None
     names = []
-    directory = os.listdir("saves")
+    directory = None
+
+    try:
+        directory = os.listdir("saves")
+    except FileNotFoundError:
+        os.mkdir("saves")
+        directory = os.listdir("saves")
+        
     if len(directory) != 0:
         current_save_number = int(directory[-1]) + 1
         for i in directory:
