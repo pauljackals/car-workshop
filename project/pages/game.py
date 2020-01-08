@@ -60,8 +60,6 @@ def hire(session):
 def shop(session):
     kits = session.get_data()['kits']
     shop_list = list(kits.keys())
-    # shop_list.append(kits_wheel)
-    # shop_list.append(kits_engine)
     prices = [10, 50]
     index = 0
     while True:
